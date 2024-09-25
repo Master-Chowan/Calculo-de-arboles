@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cylinder Visualizer with STL Download</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/exporters/STLExporter.js"></script>
+    <link href="main.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Cálculo de árboles mecánicos</h1>
+    <div class="controls">
+        <div class="control-group">
+            <label for="radius">Radio del cilindro:</label>
+            <input type="number" id="radius" value="50" min="0.1" step="0.1">
+            <label for="length">Largo del cilindro:</label>
+            <input type="number" id="length" value="450" min="0.1" step="0.1">
+        </div>
+        <div class="control-group">
+            <label>Fuerzas:</label>
+            <input type="number" id="forceX" placeholder="Fuerza en X" step="0.1">
+            <input type="number" id="forceY" placeholder="Fuerza en Y" step="0.1">
+            <input type="number" id="forceZ" placeholder="Fuerza en Z" step="0.1">
+        </div>
+        <div class="control-group">
+            <label>Coordenadas:</label>
+            <input type="number" id="coordX" placeholder="Coordenada X" step="0.1">
+            <input type="number" id="coordY" placeholder="Coordenada Y" step="0.1">
+            <input type="number" id="coordZ" placeholder="Coordenada Z" step="0.1">
+        </div>
+    </div>
+    <div class="button-group">
+        <button type="button" onclick="createCylinder2D()">Dibujar Rectángulo</button>
+        <button onclick="updateCylinders()">Cilindro resultante</button>
+        <button onclick="downloadSTL()">Download STL</button>
+    </div>
+    <h2>Visualización 2D</h2>
+    <canvas id="canvas" width="900" height="350"></canvas>
+    <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
+    <h2>Chatbot</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
+    <button onclick="sendMessage()">Send</button>
+    <h2>Visualización 3D</h2>
+    <div id="plot3D" class="plot" style="width:1400px;height:800px;"></div>
+
+    <script src="cilindro.js"></script>
+    
+</body>
+</html>
