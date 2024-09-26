@@ -7,6 +7,7 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/exporters/STLExporter.js"></script>
+    <script type="texto/javascript" src="canvasStack1v06.js"></script>
     <link href="main.css" rel="stylesheet" />
 </head>
 <body>
@@ -35,17 +36,11 @@
         <button type="button" onclick="createCylinder2D()">Cilindro Liso</button>
         <button type="button" onclick="createCylinderEsc2D()">Cilindro Escalonado</button>
     </div>
-
-    <div class="canvas-area">
     <h2>Visualización 2D</h2>
     <canvas id="canvas" width="900" height="350"></canvas>
-    </div>
-
     <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
-
     <h2>Chatbot</h2>
     <div id="chatbox"></div>
-    
     <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
     <button onclick="sendMessage()">Send</button>
     <h2>Visualización 3D</h2>

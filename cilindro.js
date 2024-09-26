@@ -9,14 +9,43 @@ function createCylinder2D() {
     // Evento para mostrar las coordenadas del mouse
     canvas.addEventListener('mousemove', (event) => {
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        coordsDisplay.textContent = `Coordenadas del mouse: (${(x - 40).toFixed(0)}, ${-1 * ((y - 175).toFixed(0))})`;
+        const x = ((event.clientX - rect.left) - 43).toFixed(0);
+        const y = -1 * (((event.clientY - rect.top) - 177).toFixed(0));
+        coordsDisplay.textContent = `Coordenadas del mouse: (${x}, ${y})`;
     });
+    // canvas.addEventListener("click", (event) => {
+        
+    //     const rect = canvas.getBoundingClientRect();
+    //     const x = event.clientX - rect.left; // Coordenada X relativa al canvas
+    //     const y = event.clientY - rect.top;  // Coordenada Y relativa al canvas
+
+    //     // Limpiar el canvas antes de dibujar una nueva flecha
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //     // Dibujar la línea principal de la flecha
+    //     const lineLength = 20; // Longitud de la línea de la flecha
+    //     ctx.beginPath();
+    //     ctx.moveTo(x, y); // Punto inicial de la línea
+    //     ctx.lineTo(x, y - lineLength); // Punto final de la línea (hacia arriba)
+    //     ctx.strokeStyle = 'black';
+    //     ctx.lineWidth = 2;
+    //     ctx.stroke();
+
+    //     // Dibujar la punta de la flecha (un triángulo pequeño)
+    //     ctx.beginPath();
+    //     ctx.moveTo(x, y - lineLength); // Punto de inicio de la punta de la flecha
+    //     ctx.lineTo(x - 5, y - lineLength + 10); // Línea hacia la izquierda
+    //     ctx.lineTo(x + 5, y - lineLength + 10); // Línea hacia la derecha
+    //     ctx.closePath(); // Cerrar el triángulo
+    //     ctx.fillStyle = 'black';
+    //     ctx.fill();
+        
+    // });
+
 
     // Función para dibujar los ejes de coordenadas
     function drawAxes() {
-        
+
         // Coordenadas del centro del canvas
         const centerX = 40;
         const centerY = 175;
@@ -30,11 +59,11 @@ function createCylinder2D() {
         ctx.stroke();
 
         // Dibujar números y marcas en el eje X
-        for (let i = -50; i <= 800; i+=50) {
+        for (let i = -50; i <= 800; i += 50) {
             let x = centerX + i;
             ctx.moveTo(x, centerY - 5);
             ctx.lineTo(x, centerY + 5);
-            
+
             ctx.stroke();
 
             // Números en el eje X
@@ -52,9 +81,9 @@ function createCylinder2D() {
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
         ctx.stroke();
-    
+
         // Dibujar números y marcas en el eje Y
-        for (let i = -250; i <= 250; i+=50) {
+        for (let i = -250; i <= 250; i += 50) {
             let y = centerY - i;
             ctx.moveTo(centerX - 5, y);
             ctx.lineTo(centerX + 5, y);
@@ -65,7 +94,7 @@ function createCylinder2D() {
                 ctx.fillText(i, centerX + 10, y + 3);
             }
             ctx.fillText('Eje Y', 5, 30);
-            
+
         }
     }
 
@@ -236,61 +265,5 @@ function updateCylinders() {
     console.log("Stored values:", storedValues);
 }
 
-function sendMessage() {
-    let input = document.getElementById('chatInput');
-    let message = input.value;
-    input.value = '';
-
-    let chatbox = document.getElementById('chatbox');
-    chatbox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
-
-    // Simple bot response
-    let response = `Current cylinder: radius = ${storedValues.radius}, length = ${storedValues.length}. `;
-    response += `Forces: (${storedValues.forceX}, ${storedValues.forceY}, ${storedValues.forceZ}). `;
-    response += `Coordinates: (${storedValues.coordX}, ${storedValues.coordY}, ${storedValues.coordZ}).`;
-    chatbox.innerHTML += `<p><strong>Bot:</strong> ${response}</p>`;
-
-    chatbox.scrollTop = chatbox.scrollHeight;
-}
-
-function downloadSTL() {
-    const radius = storedValues.radius || 20;
-    const length = storedValues.length || 180;
-
-    // Crear una escena de Three.js
-    const scene = new THREE.Scene();
-
-    // Crear la geometría del cilindro
-    const geometry = new THREE.CylinderGeometry(radius, radius, length, 320);
-
-    // Rotar el cilindro para que esté horizontal
-    geometry.rotateZ(Math.PI / 2);
-
-    // Crear un material (no afecta al STL, pero es necesario para crear el mesh)
-    const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-
-    // Crear el mesh y añadirlo a la escena
-    const cylinder = new THREE.Mesh(geometry, material);
-    scene.add(cylinder);
-
-    // Crear el exportador STL
-    const exporter = new THREE.STLExporter();
-
-    // Exportar la escena a STL
-    const stlString = exporter.parse(scene);
-
-    // Crear un Blob con el contenido STL
-    const blob = new Blob([stlString], { type: 'text/plain' });
-
-    // Crear un enlace de descarga
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'cylinder.stl';
-    link.click();
-
-    // Liberar el objeto URL
-    URL.revokeObjectURL(link.href);
-}
-
 // Initial plot
-updateCylinders();
+//updateCylinders();
