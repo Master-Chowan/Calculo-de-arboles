@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diseño de ejes</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -10,58 +11,73 @@
     <link href="main.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>Cálculo de árboles mecánicos</h1>
-    <div class="controls">
-        <div class="control-group">
-            <label for="radius">Radio del cilindro:</label>
-            <input type="number" id="radius" value="50" min="0.1" step="0.1">
-            <label for="length">Largo del cilindro:</label>
-            <input type="number" id="length" value="450" min="0.1" step="0.1">
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Encabezado que cubre todo el ancho -->
+        <div class="header">Cálculo de Árboles Mecánicos</div>
+
+        <!-- Contenido de dos columnas -->
+        <div class="content">
+            <!-- Controles a la izquierda -->
+            <div class="controls">
+                <div class="control-group">
+                    <label for="radius">Radio del cilindro:</label>
+                    <input type="number" id="radius" value="50" min="0.1" step="0.1">
+                    <label for="length">Largo del cilindro:</label>
+                    <input type="number" id="length" value="280" min="0.1" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>Fuerzas:</label>
+                    <input type="number" id="forceX" placeholder="Fuerza en X" step="0.1">
+                    <input type="number" id="forceY" placeholder="Fuerza en Y" step="0.1">
+                    <input type="number" id="forceZ" placeholder="Fuerza en Z" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>Coordenadas:</label>
+                    <input type="number" id="coordX" placeholder="Coordenada X" step="0.1">
+                    <input type="number" id="coordY" placeholder="Coordenada Y" step="0.1">
+                    <input type="number" id="coordZ" placeholder="Coordenada Z" step="0.1">
+                </div>
+            </div>
+
+            <!-- Zona de visualización del canvas -->
+            <div class="canvas-area">
+                <h2>Visualización 2D</h2>
+                <canvas id="canvas" width="800" height="350"></canvas>
+                <div class="button-group">
+                    <button type="button" onclick="createCylinder2D()">Cilindro Liso</button>
+                    <button type="button" onclick="createCylinderEsc2D()">Cilindro Escalonado</button>
+                </div>
+                <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
+            </div>
         </div>
-        <div class="control-group">
-            <label>Fuerzas:</label>
-            <input type="number" id="forceX" placeholder="Fuerza en X" step="0.1">
-            <input type="number" id="forceY" placeholder="Fuerza en Y" step="0.1">
-            <input type="number" id="forceZ" placeholder="Fuerza en Z" step="0.1">
+
+        <!-- Chatbot que cubre todo el ancho -->
+        <div class="chatbot">
+            <h2>Chatbot</h2>
+            <div id="chatbox"></div>
+            <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
+            <button onclick="sendMessage()">Send</button>
         </div>
-        <div class="control-group">
-            <label>Coordenadas:</label>
-            <input type="number" id="coordX" placeholder="Coordenada X" step="0.1">
-            <input type="number" id="coordY" placeholder="Coordenada Y" step="0.1">
-            <input type="number" id="coordZ" placeholder="Coordenada Z" step="0.1">
+
+        <!-- Zona de visualización 3D -->
+        <h2>Visualización 3D</h2>
+        <div class="button-group">
+            <button onclick="updateCylinders()">Generar Cilindro en 3D</button>
+            <button onclick="updateCylindersEsc()">Generar Cilindro Esc en 3D</button>
+            <button onclick="downloadSTL()">Descarga Cilindro STL</button>
+            <button onclick="downloadSTLEsc()">Descarga Cilindro Esc STL</button>
+        </div>
+        <div class="plot-container">
+            <div id="plot3D" class="plot" style="width:900px;height:700px;"></div>
         </div>
     </div>
-    <div class="button-group">
-        <button type="button" onclick="createCylinder2D()">Cilindro Liso</button>
-        <button type="button" onclick="createCylinderEsc2D()">Cilindro Escalonado</button>
-    </div>
 
-    <div class="canvas-area">
-    <h2>Visualización 2D</h2>
-    <canvas id="canvas" width="900" height="350"></canvas>
-    </div>
-
-    <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
-
-    <h2>Chatbot</h2>
-    <div id="chatbox"></div>
-    
-    <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
-    <button onclick="sendMessage()">Send</button>
-    <h2>Visualización 3D</h2>
-    <div class="button-group"></div>
-        <button onclick="updateCylinders()">Generar Cilindro en 3D</button>
-        <button onclick="updateCylindersEsc()">Generar Cilindro Esc en 3D</button>
-        <button onclick="downloadSTL()">Descarga Cilindro STL</button>
-        <button onclick="downloadSTLEsc()">Descarga Cilindro Esc STL</button>
-    </div>
-    <div id="plot3D" class="plot" style="width:1200px;height:700px;"></div>
-
+    <!-- Scripts -->
     <script src="cilindro_esc.js"></script>
     <script src="cilindro.js"></script>
     <script src="chatbot.js"></script>
     <script src="stl.js"></script>
     <script src="stlEsc.js"></script>
-    
 </body>
 </html>
