@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseño de ejes</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/exporters/STLExporter.js"></script>
+    <link href="main.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Encabezado que cubre todo el ancho -->
+        <div class="header">Cálculo de Árboles Mecánicos</div>
+
+        <div class="button-container">
+            <button class="btn-back" onclick=" window.location.href='main.html'">Regresar</button>
+        </div>
+
+        <!-- Contenido de dos columnas -->
+        <div class="content">
+            <!-- Controles a la izquierda -->
+            <div class="controls">
+
+                <div class="control-group">
+                    <label for="unitType">Tipo de unidades:</label>
+                    <select id="unitType" onchange="cambiarUnidades()">
+                        <option value="mm">Internacional</option>
+                        <option value="in">Imperial</option>
+                    </select>
+                
+                    <div class="input-group">
+                        <label for="diameter">Diámetro del cilindro: </label>
+                        <input type="number" id="diameter" value="30" min="0.1" step="0.1">
+                        <span id="diameterUnit" class="unit-label">mm</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="length">Largo del cilindro: </label>
+                        <input type="number" id="length" value="80" min="0.1" step="0.1">
+                        <span id="lengthUnit" class="unit-label">mm</span>
+                    </div>
+
+                    <button onclick="guardarCilindro()">Generar Cilindro</button>
+                
+                    <label>Fuerzas:</label>
+                    <div class="input-group">
+                        <input type="number" id="forceX" value="0" step="0.1">
+                        <span id="forceXUnit" class="force-label">N</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="forceY" value="0" step="0.1">
+                        <span id="forceYUnit" class="force-label">N</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="forceZ" value="0" step="0.1">
+                        <span id="forceZUnit" class="force-label">N</span>
+                    </div>
+
+                    <label>Coordenadas:</label>
+                    <div class="input-group">
+                        <input type="number" id="coordEnX" value="0" step="0.1">
+                        <span id="coordXUnit" class="unit-label">mm</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="coordEnY" value="0" step="0.1">
+                        <span id="coordYUnit" class="unit-label">mm</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="coordEnZ" value="0" step="0.1">
+                        <span id="coordZUnit" class="unit-label">mm</span>
+                    </div>
+
+                    <button onclick="guardarFuerzas()">Guardar Fuerzas</button>
+                </div>
+
+
+
+                <!-- Zona de visualización del canvas -->
+                <div class="canvas-area">
+                    <h2>Visualización 2D</h2>
+                    <div id="canvas-container" style="position: relative; width: 800px; height: 350px;">
+                        <canvas id="layer1" width="800" height="350" style="position: absolute; z-index: 1;"></canvas>
+                        <!-- Capa de rectángulos -->
+                        <canvas id="layer2" width="800" height="350" style="position: absolute; z-index: 2;"></canvas>
+                        <!-- Capa de ejes -->
+                        <canvas id="layer3" width="800" height="350" style="position: absolute; z-index: 3;"></canvas>
+                        <!-- Capa de flechas -->
+                    </div>
+
+                    <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
+
+                    <div class="listados">
+                        <div>
+                            <h3>Lista de Cilindros:</h3>
+                            <ul id="listaCilindros"></ul>
+                        </div>
+                        <div>
+                            <h3>Lista de Fuerzas:</h3>
+                            <ul id="listaFuerzas"></ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <!-- Chatbot que cubre todo el ancho -->
+                <div class="chatbot">
+                    <h2>Chatbot</h2>
+                    <div id="chatbox"></div>
+                    <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
+                </div>
+                <button onclick="sendMessage()">Enviar</button>
+
+
+                <!-- Zona de visualización 3D -->
+                <h2>Visualización 3D</h2>
+                <div class="button-group">
+                    <!--button onclick="updateCylinders()">Generar Cilindro en 3D</button-->
+                    <button onclick="updateCylindersEsc()">Generar Cilindro en 3D</button>
+                    <!--button onclick="downloadSTL()">Descarga Cilindro STL</button-->
+                    <button onclick="downloadSTLEsc()">Descarga Cilindro STL</button>
+                </div>
+                <div class="plot-container">
+                    <div id="plot3D" class="plot" style="width:900px;height:700px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="cilindro_esc.js"></script>
+        <script src="chatbot.js"></script>
+        <script src="stl.js"></script>
+</body>
+
+</html>
