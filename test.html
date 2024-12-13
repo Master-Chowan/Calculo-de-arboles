@@ -1,141 +1,303 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diseño de ejes</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/exporters/STLExporter.js"></script>
-    <link href="test.css" rel="stylesheet" />
+    <title>Calculadora de Ejes Mecánicos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .input-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .canvas-container {
+            margin-top: 20px;
+        }
+
+        canvas {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
-
 <body>
-    <!-- Contenedor principal -->
     <div class="container">
-        <!-- Encabezado que cubre todo el ancho -->
-        <div class="header">Cálculo de Árboles Mecánicos</div>
+        <h2>Calculadora de Ejes Mecánicos</h2>
 
-        <div class="button-container">
-            <button class="btn-back" onclick=" window.location.href='main.html'">Regresar</button>
-        </div>
-
-        <!-- Contenido de dos columnas -->
-        <div class="content">
-            <!-- Controles a la izquierda -->
-            <div class="controls">
-
-                <div class="control-group">
-                    <label for="unitType">Tipo de unidades:</label>
-                    <select id="unitType" onchange="cambiarUnidades()">
-                        <option value="mm">Internacional</option>
-                        <option value="in">Imperial</option>
+        <div class="input-section">
+            <div class="input-group">
+                <h3>Apoyos</h3>
+                <div>
+                    <label>Posición Apoyo 1 (mm):</label>
+                    <input type="number" id="apoyo1" value="0">
+                    <label>Tipo Apoyo 1:</label>
+                    <select id="tipoApoyo1">
+                        <option value="simple">Simple</option>
+                        <option value="fijo">Fijo</option>
                     </select>
-                
-                    <div class="input-group">
-                        <label for="diameter">Diámetro del cilindro: </label>
-                        <input type="number" id="diameter" value="30" min="0.1" step="0.1">
-                        <span id="diameterUnit" class="unit-label">mm</span>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="length">Largo del cilindro: </label>
-                        <input type="number" id="length" value="80" min="0.1" step="0.1">
-                        <span id="lengthUnit" class="unit-label">mm</span>
-                    </div>
-
-                    <button onclick="guardarCilindro()">Generar Cilindro</button>
-                
-                    <label>Fuerzas:</label>
-                    <div class="input-group">
-                        <input type="number" id="forceX" value="0" step="0.1">
-                        <span id="forceXUnit" class="force-label">N</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="forceY" value="0" step="0.1">
-                        <span id="forceYUnit" class="force-label">N</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="forceZ" value="0" step="0.1">
-                        <span id="forceZUnit" class="force-label">N</span>
-                    </div>
-
-                    <label>Coordenadas:</label>
-                    <div class="input-group">
-                        <input type="number" id="coordEnX" value="0" step="0.1">
-                        <span id="coordXUnit" class="unit-label">mm</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="coordEnY" value="0" step="0.1">
-                        <span id="coordYUnit" class="unit-label">mm</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="coordEnZ" value="0" step="0.1">
-                        <span id="coordZUnit" class="unit-label">mm</span>
-                    </div>
-
-                    <button onclick="guardarFuerzas()">Guardar Fuerzas</button>
                 </div>
-
-
-
-                <!-- Zona de visualización del canvas -->
-                <div class="canvas-area">
-                    <h2>Visualización 2D</h2>
-                    <div id="canvas-container" style="position: relative; width: 800px; height: 350px;">
-                        <canvas id="layer1" width="800" height="350" style="position: absolute; z-index: 1;"></canvas>
-                        <!-- Capa de rectángulos -->
-                        <canvas id="layer2" width="800" height="350" style="position: absolute; z-index: 2;"></canvas>
-                        <!-- Capa de ejes -->
-                        <canvas id="layer3" width="800" height="350" style="position: absolute; z-index: 3;"></canvas>
-                        <!-- Capa de flechas -->
-                    </div>
-
-                    <div class="coordinates" id="coords">Coordenadas del mouse: (0, 0)</div>
-
-                    <div class="listados">
-                        <div>
-                            <h3>Lista de Cilindros:</h3>
-                            <ul id="listaCilindros"></ul>
-                        </div>
-                        <div>
-                            <h3>Lista de Fuerzas:</h3>
-                            <ul id="listaFuerzas"></ul>
-                        </div>
-                    </div>
+                <div>
+                    <label>Posición Apoyo 2 (mm):</label>
+                    <input type="number" id="apoyo2" value="1000">
+                    <label>Tipo Apoyo 2:</label>
+                    <select id="tipoApoyo2">
+                        <option value="simple">Simple</option>
+                        <option value="fijo">Fijo</option>
+                    </select>
                 </div>
-
             </div>
-            <div>
-                <!-- Chatbot que cubre todo el ancho -->
-                <div class="chatbot">
-                    <h2>Chatbot</h2>
-                    <div id="chatbox"></div>
-                    <input type="text" id="chatInput" placeholder="Datos sobre el cilindro...">
-                </div>
-                <button onclick="sendMessage()">Enviar</button>
 
+            <div class="input-group">
+                <h3>Fuerzas</h3>
+                <div>
+                    <label>Posición (mm):</label>
+                    <input type="number" id="fuerzaPosicion" value="500">
+                    <label>Magnitud (N):</label>
+                    <input type="number" id="fuerzaMagnitud" value="1000">
+                    <label>Ángulo (grados):</label>
+                    <input type="number" id="fuerzaAngulo" value="90">
+                    <button onclick="agregarFuerza()">Agregar Fuerza</button>
+                </div>
+                <div id="listaFuerzas">
+                    <!-- Aquí se mostrarán las fuerzas agregadas -->
+                </div>
+            </div>
 
-                <!-- Zona de visualización 3D -->
-                <h2>Visualización 3D</h2>
-                <div class="button-group">
-                    <!--button onclick="updateCylinders()">Generar Cilindro en 3D</button-->
-                    <button onclick="updateCylindersEsc()">Generar Cilindro en 3D</button>
-                    <!--button onclick="downloadSTL()">Descarga Cilindro STL</button-->
-                    <button onclick="downloadSTLEsc()">Descarga Cilindro STL</button>
-                </div>
-                <div class="plot-container">
-                    <div id="plot3D" class="plot" style="width:900px;height:700px;"></div>
-                </div>
+            <div class="input-group">
+                <h3>Propiedades del Material</h3>
+                <label>Resistencia a la Fluencia (MPa):</label>
+                <input type="number" id="Sy" value="250">
+                <label>Resistencia Última (MPa):</label>
+                <input type="number" id="Su" value="400">
+                <label>Factor de Seguridad:</label>
+                <input type="number" id="factorSeguridad" value="2.0" step="0.1">
             </div>
         </div>
 
-        <!-- Scripts -->
-        <script src="cilindro.js"></script>
-        <script src="chatbot.js"></script>
-        <script src="stl.js"></script>
-</body>
+        <button onclick="calcular()">Calcular</button>
 
+        <div class="canvas-container">
+            <h3>Diagrama de Fuerzas</h3>
+            <canvas id="diagramaFuerzas" width="800" height="400"></canvas>
+
+            <h3>Diagrama de Momentos</h3>
+            <canvas id="diagramaMomentos" width="800" height="400"></canvas>
+        </div>
+
+        <div class="results">
+            <h3>Resultados</h3>
+            <div id="resultados">
+                <!-- Aquí se mostrarán los resultados -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        
+        
+        // Hacer la clase disponible globalmente
+        window.calculadora = new CalculadoraEje();
+        
+        // Funciones globales
+        window.agregarFuerza = function() {
+            const posicion = parseFloat(document.getElementById('fuerzaPosicion').value);
+            const magnitud = parseFloat(document.getElementById('fuerzaMagnitud').value);
+            const angulo = parseFloat(document.getElementById('fuerzaAngulo').value) * Math.PI / 180;
+            
+            calculadora.agregarFuerza(posicion, magnitud, angulo);
+            actualizarListaFuerzas();
+        };
+        
+        window.calcular = function() {
+            // Limpiar calculadora
+            window.calculadora = new CalculadoraEje();
+            
+            // Agregar apoyos
+            const apoyo1 = parseFloat(document.getElementById('apoyo1').value);
+            const apoyo2 = parseFloat(document.getElementById('apoyo2').value);
+            const tipoApoyo1 = document.getElementById('tipoApoyo1').value;
+            const tipoApoyo2 = document.getElementById('tipoApoyo2').value;
+            
+            calculadora.agregarApoyo(apoyo1, tipoApoyo1);
+            calculadora.agregarApoyo(apoyo2, tipoApoyo2);
+            
+            // Agregar fuerza inicial de ejemplo
+            agregarFuerza();
+            
+            // Calcular y mostrar resultados
+            const reacciones = calculadora.calcularReacciones();
+            const Sy = parseFloat(document.getElementById('Sy').value);
+            const Su = parseFloat(document.getElementById('Su').value);
+            const factorSeguridad = parseFloat(document.getElementById('factorSeguridad').value);
+            
+            // Calcular momento máximo
+            const momentos = calculadora.calcularDiagramaMomentos();
+            const momentoMax = Math.max(...momentos.map(m => Math.abs(m.momento)));
+            
+            // Calcular diámetros
+            const diametros = calculadora.calcularDiametro(momentoMax, 0, Sy, Su, factorSeguridad);
+            
+            // Mostrar resultados
+            const resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>Parámetro</th>
+                        <th>Valor</th>
+                    </tr>
+                    <tr>
+                        <td>Reacción en A</td>
+                        <td>${reacciones.R1.toFixed(2)} N</td>
+                    </tr>
+                    <tr>
+                        <td>Reacción en B</td>
+                        <td>${reacciones.R2.toFixed(2)} N</td>
+                    </tr>
+                    <tr>
+                        <td>Momento Máximo</td>
+                        <td>${momentoMax.toFixed(2)} N·mm</td>
+                    </tr>
+                    <tr>
+                        <td>Diámetro (Tresca)</td>
+                        <td>${diametros.tresca.toFixed(2)} mm</td>
+                    </tr>
+                    <tr>
+                        <td>Diámetro (Von Mises)</td>
+                        <td>${diametros.vonMises.toFixed(2)} mm</td>
+                    </tr>
+                    <tr>
+                        <td>Diámetro (Rankine)</td>
+                        <td>${diametros.rankine.toFixed(2)} mm</td>
+                    </tr>
+                    <tr>
+                        <td>Diámetro (Coulomb-Mohr)</td>
+                        <td>${diametros.coulomb.toFixed(2)} mm</td>
+                    </tr>
+                </table>
+            `;
+            
+            // Dibujar diagramas
+            calculadora.dibujarDiagramaFuerzas('diagramaFuerzas');
+            calculadora.dibujarDiagramaMomentos('diagramaMomentos');
+        };
+        
+        function actualizarListaFuerzas() {
+            const listaFuerzas = document.getElementById('listaFuerzas');
+            listaFuerzas.innerHTML = calculadora.fuerzas.map((fuerza, index) => `
+                <div>
+                    Fuerza ${index + 1}: ${fuerza.magnitud}N @ ${(fuerza.angulo * 180 / Math.PI).toFixed(1)}°
+                    (${fuerza.posicion}mm)
+                </div>
+            `).join('');
+        }
+        
+        // Calcular inicialmente
+        calcular();
+    </script>
+    <div>
+        <h3>Calcular Momento por Producto Vectorial</h3>
+        <label>Punto de referencia O:</label><br>
+        Xo: <input type="number" id="xo"> Yo: <input type="number" id="yo"> Zo: <input type="number" id="zo"><br><br>
+        
+        <label>Punto de aplicación de la fuerza:</label><br>
+        Xf: <input type="number" id="xf"> Yf: <input type="number" id="yf"> Zf: <input type="number" id="zf"><br><br>
+        
+        <label>Vector Fuerza F:</label><br>
+        Fx: <input type="number" id="Fx"> Fy: <input type="number" id="Fy"> Fz: <input type="number" id="Fz"><br><br>
+        
+        <button onclick="calcularMomento()">Calcular Momento</button><br><br>
+        
+        <div id="resultado"></div>
+        <div id="grafico" style="width: 100%; height: 500px;"></div>
+    </div>
+    <script src="test.js"></script>
+</body>
 </html>

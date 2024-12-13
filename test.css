@@ -9,21 +9,6 @@ body {
     flex-direction: column;
 }
 
-.container {
-    display: grid;
-    grid-template-rows: auto 1fr auto; 
-    gap: 20px;
-    width: 100%;
-    max-width: 1400px;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-h2 {
-    text-align: center;
-
-}
-
 .header {
     grid-column: 1 / -1;
     text-align: center;
@@ -33,49 +18,94 @@ h2 {
     background-color: #0077b6;
     color: white;
     border-radius: 5px;
+    width: 100%;
+    max-width: 1400px;
 }
 
-.content {
-    
-    gap: 20px;
+.button-back {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.main-layout {
+    display: flex;
+    justify-content: space-between;
+    width: 1400px;
+    margin: 0 auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+.container {
+
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    background-color: #add4f3;
+    border: 1px solid #0d0e0f;
+    border-radius: 5px;
+    padding: 20px;
+
+
 }
 
 .controls {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #e3e9ed;
     border-radius: 5px;
     padding: 15px;
-    font-size: 20px;
+    font-size: 15px;
+
 }
 
+.content {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 5000px;
+}
 
 .controls input[type="number"] {
-    font-size: 20px;
+    font-size: 15px;
     padding: 5px;
-    width: 100px;
-    margin-right: 5px;
+    width: 70px;
+}
+
+.entrada-dual {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #0d0e0f;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.input-group {
+    margin-bottom: 10px;
+
+}
+
+.fuerza-coord {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid #0d0e0f;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
 }
 
 .control-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-/*
-.input-group {
-    display: flex;
-    align-items: center;
-    
+    margin-top: 10px;
 }
 
-.unit-label {
-    font-size: 20px;
-    margin-left: 5px;
-  }
-  
-*/
 .canvas-area {
     display: flex;
     flex-direction: column;
@@ -85,7 +115,9 @@ h2 {
     padding: 20px;
 }
 
-.layer1, .layer2, .layer3 {
+.layer1,
+.layer2,
+.layer3 {
     border: 1px solid #ccc;
     width: 100%;
     max-width: 800px;
@@ -120,6 +152,7 @@ button {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -175,4 +208,4 @@ button:hover {
     border: 1px solid #ddd;
     background-color: #f9f9f9;
     box-sizing: border-box;
-} 
+}
